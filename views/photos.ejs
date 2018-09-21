@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html class="bg-dark">
+<% include head %>
+<body>
+  <% include nav %>
+  <div class="container">
+    <h3 class = "photo-list-header capitlize"> <%= title%></h3>
+    <div class="row">
+      <% for(var i = 0 ; i<photos.length ; i++){%>
+          <div class="col-12 col-md-6 col-lg-4 col-xl-4">
+          <img data-target="#myModal" data-toggle="modal" class="img-fluid small-img" src="<%= photos[i].path %>" alt="<%= photos[i].originalname %>">        
+        </div>      
+      <%}%>                   
+      <% if (user) { %>                                                       
+      <div class= "plus col-12 col-md-6 col-lg-4 col-xl-4" onclick="document.location='/upload/<%=albumId%>/'">
+        <i class="fa fa-fw fa-plus-circle"></i>
+      </div>
+      <% } %>    
+    </div>  
+    <!-- Modal --> 
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">  
+          <div class="modal-body">  
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>        
+            <img src="" alt="" id="image" class="img-fluid">
+          </div>  
+        </div>
+      </div>
+    </div> 
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script>
+      $(document).ready(function() {
+        $("#image").css('opacity', 0);
+        $("#image").css('border', 'none');
+        var $imageSrc;  
+        $('.container img').click(function() {
+            $imageSrc = $(this).attr('src');
+            console.log($imageSrc);
+        });
+        console.log($imageSrc);
+        $(".small-img").css('opacity', 1);
+        
+        $("#image").on('load', function (){
+            $("#image").css('opacity', 1);
+            $("#image").css('border', '');
+        })
+        
+        $('#myModal').on('shown.bs.modal', function (e) {
+          $("#image").attr('src', $imageSrc  ); 
+        })
+        $('#myModal').on('hide.bs.modal', function (e) {
+            $("#image").attr('src','');
+            $("#image").css('opacity', 0);
+            $("#image").css('border', 'none');     
+        })   
+      });
+    </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <% include footer %>
+  </body>
+</html>
